@@ -18,14 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtil jwtUtil;  /*JwtTokenHelper*/
+    private JwtUtil jwtUtil;
 
     @Autowired
-   private JwtService jwtService;
+   private  JwtService jwtService;
 
 
 
@@ -49,6 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             }catch (ExpiredJwtException e){
                 System.out.println("Jwt token is expired");
+
             }catch (MalformedJwtException e){
                 System.out.println("invalid jwt");
             }
@@ -64,7 +67,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null) {
 
             UserDetails userDetails= jwtService.loadUserByUsername(username);
-            if (this.jwtUtil.validateToken(jwtToken, userDetails)) {
+            if (jwtUtil.validateToken(jwtToken, userDetails)) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -72,23 +75,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
             }
 
-
-           /* UserDetails userDetails = this.userDetailsService.loadUserByUsername(userName);
-
-            if (this.jwtUtil.validateToken(jwtToken, userDetails)) {
-
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            } else {
-                System.out.println("invalid jwt token");
-            }
-        }else {
-
-
-                System.out.println("username is null or context is not null");
-
-        }*/
 
         filterChain.doFilter(request,response);
 

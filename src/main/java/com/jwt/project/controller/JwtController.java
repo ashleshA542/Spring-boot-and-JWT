@@ -17,7 +17,7 @@ public class JwtController {
 
 
     @Autowired
-    private JwtService jwtService;
+    private  JwtService jwtService;
 
 
     @PostMapping({"/authenticate"})

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 
+
 @RestController
 public class UserController {
 
@@ -23,18 +24,18 @@ public class UserController {
         userService.initRolesAndUser();
     }
 
-    @GetMapping("/forAdmin")
+    @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
     public String forAdmin(){
         return "This URL is only accessible to admin";
     }
-    @GetMapping("/forUser")
+    @GetMapping({"/forUser"})
     @PreAuthorize("hasRole('User')")
 
     public String forUser(){
         return "This URL is only accessible to user";
     }
-    @PostMapping("/registerNewUser")
+    @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user){
         return userService.registerNewUser(user);
     }

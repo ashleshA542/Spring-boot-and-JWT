@@ -26,9 +26,9 @@ public class UserService {
     public User registerNewUser(User user){
         Role role=roleRepository.findById("User").get();
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRole(roles);
+        Set<Role> userroles = new HashSet<>();
+        userroles.add(role);
+        user.setRole(userroles);
         user.setUserPassword(getEncodePassword(user.getUserPassword()));
         return  userRepository.save(user);
     }
@@ -77,10 +77,6 @@ public class UserService {
         user.setRole(userRoles);
         userRoles.add(userRole);
         userRepository.save(user);*/
-
-
-
-
 
 
     }
