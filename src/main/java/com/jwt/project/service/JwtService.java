@@ -3,6 +3,7 @@ package com.jwt.project.service;
 import com.jwt.project.entity.JwtRequest;
 import com.jwt.project.entity.JwtResponse;
 import com.jwt.project.entity.User;
+import com.jwt.project.exception.ResourceNotFoundException;
 import com.jwt.project.repository.UserRepository;
 import com.jwt.project.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class JwtService implements UserDetailsService {
       return new JwtResponse(user,newGeneratedToken);
 
    }
+
+
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

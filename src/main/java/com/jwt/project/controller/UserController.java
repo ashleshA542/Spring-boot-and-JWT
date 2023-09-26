@@ -1,16 +1,17 @@
 package com.jwt.project.controller;
 
 
+import com.jwt.project.dto.UserDto;
 import com.jwt.project.entity.User;
 import com.jwt.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 
 @RestController
@@ -20,25 +21,45 @@ public class UserController {
     private UserService userService;
 
     @PostConstruct
-    public void initRolesAndUsers(){
+    public void initRolesAndUsers() {
         userService.initRolesAndUser();
     }
 
-    @GetMapping({"/forAdmin"})
-    @PreAuthorize("hasRole('Admin')")
-    public String forAdmin(){
-        return "This URL is only accessible to admin";
-    }
-    @GetMapping({"/forUser"})
-    @PreAuthorize("hasRole('User')")
 
-    public String forUser(){
-        return "This URL is only accessible to user";
-    }
     @PostMapping({"/registerNewUser"})
-    public User registerNewUser(@RequestBody User user){
+    public User registerNewUser(@RequestBody User user) {
         return userService.registerNewUser(user);
     }
 
 
+    @GetMapping("/finduserbyname/{username}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        UserDto getById = userService.getUserByUsername(username);
+        return new ResponseEntity<UserDto>(getById, HttpStatus.OK);
+    }
+
+
+    @GetMapping({"/viewAll"})
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> viewAll = userService.getAllUsers();
+        return new ResponseEntity<List<UserDto>>(viewAll, HttpStatus.ACCEPTED);
+
+    }
+
+    @PutMapping("/{username}")
+    @PreAuthorize("hasRole('User')")
+    public ResponseEntity<UserDto> updateUser(@PathVariable String username, @RequestBody UserDto updatedUser) {
+        UserDto updateUser = userService.updateUser(username, updatedUser);
+        return new ResponseEntity<>(updateUser, HttpStatus.ACCEPTED);
+    }
+
+
+    @DeleteMapping("/{username}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<String> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return new ResponseEntity<String>("User is deleted successfully.", HttpStatus.OK);
+    }
 }

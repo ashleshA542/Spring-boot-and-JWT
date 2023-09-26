@@ -15,8 +15,9 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
- /*commence method taba execute hunxa jaba unauthorized person
+/*commence method taba execute hunxa jaba unauthorized person
     authorized api ko access garna khojxa*/
+
 
 
     @Override
